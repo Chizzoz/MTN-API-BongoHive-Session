@@ -9,6 +9,7 @@ Event page: <a href="https://www.eventbrite.com/e/an-introduction-to-the-mtn-api
 I would like to share my experience with the MTN API. If I was asked to put that into one sentence, it would be:
 ##A Web Approach to Integrating MTN API
 And below are some highlights:
+
 1. Introduction to [MTN Developer portal and available resources](https://developer.mtn.com/community/portal/site.action?s=devsite&c=Home "MTN Developer portal and available resources")
 2. Using SDP32 Interface Simulator
 3. Demo service walkthrough
