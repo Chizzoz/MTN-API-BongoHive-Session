@@ -20,7 +20,7 @@ And below are some highlights:
 5. Introducing SOAPUI
   - Now, if you downloaded a demo service from the developer portal or used the SDP32 Simulator, you might be wondering why I am introducing WSDL files when you didn't even have to use them. Well, that's where [SOAPUI](https://www.soapui.org/open-source.html) comes in. What is SOAPUI? I picked this right off their website:
 
-> SoapUI is the world's most widely-used open source API testing tool for SOAP and REST APIs.
+    > SoapUI is the world's most widely-used open source API testing tool for SOAP and REST APIs.
 
 6. Introducing Developer Guides
 7. Alternative method to implement demo service using PHP
