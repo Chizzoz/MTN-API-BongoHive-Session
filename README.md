@@ -11,7 +11,7 @@ I would like to share my experience with the MTN API. If I was asked to put that
 And below are some highlights:
 
 1. Introduction to [MTN Developer portal and available resources](https://developer.mtn.com/community/portal/site.action?s=devsite&c=Home "MTN Developer portal and available resources")
-2. Using SDP32 Interface Simulator
+2. Using SDP32 Interface Simulator. [Download it and try it out](https://developer.mtn.com/community/portal/site.action?s=devsite&c=detailsResource&resourceId=150&categoryId=DEV1000005&search=DEV1000005&resourceName=SDP32_Simulator&h=firresource&currentPage=1&osIds=DEV2000001,DEV2000002,DEV2000003,DEV2000004,DEV2000005&flag=fromRight "SDP32 Interface Simulator")
 3. Demo service walkthrough
 4. Introducing WSDL files
 5. Introducing SOAPUI
