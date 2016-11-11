@@ -30,3 +30,8 @@ And below are some highlights:
   - I called this a web approach to integrating MTN API, if you are like me, intending to develop something that runs in the browser and not using an IDE like Eclipse EE, working with XML, SOAP, WSDL, etc pose quite a challenge. If you used a PHP demo service, you would have had to include [NuSOAP - SOAP Toolkit for PHP](https://sourceforge.net/projects/nusoap/) and [ThinkPHP2.1](http://www.thinkphp.cn/down/73.html). Including these other tools, learning how to use them, etc, proved to be too much admin, plus there was the issue of speed. Looked for alternative solutions and finally, thanks to my buddies Google and Stack Overflow, I stumbled upon a number of solutions that I incorporated to come up up with a solution I was pleased with. This involves embedding XML files directly into PHP code and manipulating SOAP responses and requests using a combination of [PHP cURL Library](http://php.net/manual/en/book.curl.php), [SimpleXMLElement](http://php.net/manual/en/class.simplexmlelement.php) and [XPath Path Expressions](http://www.w3schools.com/xml/xml_xpath.asp).
 8. Creating API
   - Lastly, you might want to extend your app beyond the browser to other mobile platforms, SMS, USSD, etc using URL queries. To do that, you will also need to create your own API that provides interaction with your app. 
+
+So, that's about it. Thank you for your time!
+
+#TODO
+*I will have to update this, adding some working code on how to manipulate XML messages using cURL, SimpleXMLElement and XPath*
