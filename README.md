@@ -29,7 +29,7 @@ And below are some highlights:
 7. Alternative method to implement demo service using PHP
   - I called this a web approach to integrating MTN API, if you are like me, intending to develop something that runs in the browser and not using an IDE like Eclipse EE, working with XML, SOAP, WSDL, etc pose quite a challenge. If you used a PHP demo service, you would have had to include [NuSOAP - SOAP Toolkit for PHP](https://sourceforge.net/projects/nusoap/) and [ThinkPHP2.1](http://www.thinkphp.cn/down/73.html). Including these other tools, learning how to use them, etc, proved to be too much admin, plus there was the issue of speed. Looked for alternative solutions and finally, thanks to my buddies Google and Stack Overflow, I stumbled upon a number of solutions that I incorporated to come up up with a solution I was pleased with. This involves embedding XML files directly into PHP code and manipulating SOAP responses and requests using a combination of [PHP cURL Library](http://php.net/manual/en/book.curl.php), [SimpleXMLElement](http://php.net/manual/en/class.simplexmlelement.php) and [XPath Path Expressions](http://www.w3schools.com/xml/xml_xpath.asp).
 
-## Sample Book Store XML manipulation using XPath
+## [Sample Book Store XML manipulation using XPath](https://github.com/Chizzoz/MTN-API-BongoHive-Session/blob/master/XPath_Example.php)
 ```php
 <?php
 	/*
@@ -81,7 +81,7 @@ XML;
 ?>
 ```
 
-## Sample code on how to send a SOAP request to specific server URL, receive the SOAP response from server and pull data from response using PHP cURL Library, SimpleXMLElement and XPath Path Expressions.
+## [Sample code on how to send a SOAP request to specific server URL, receive the SOAP response from server and pull data from response using PHP cURL Library, SimpleXMLElement and XPath Path Expressions](https://github.com/Chizzoz/MTN-API-BongoHive-Session/blob/master/SOAPResponseHandler.php)
 ```php
 <?php
 	/*
