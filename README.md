@@ -28,6 +28,56 @@ And below are some highlights:
   - To start testing a specific MTN API service, you need to download the relevant WSDL file from the resources page and import it into a new SOAPUI project, then you can use the SOAP messages specified in the [API reference documentaion](https://developer.mtn.com/community/portal/site.action?s=devsite&c=Resources&osIds=DEV2000001,DEV2000002,DEV2000003,DEV2000004,DEV2000005&categoryId=DEV1000002&apiResource=yes). With your SOAPUI project setup, you can create mock services that will emulate the MTN API server. I found API Reference documents to be extremely helpful in providing message flows and field specifications for messages sent. The API Reference documents include detailed sequence diagrams, sample SOAP messages and SOAP message parameter (field) specifications; like type (string, integer, etc), length, mandatory or not, etc.
 7. Alternative method to implement demo service using PHP
   - I called this a web approach to integrating MTN API, if you are like me, intending to develop something that runs in the browser and not using an IDE like Eclipse EE, working with XML, SOAP, WSDL, etc pose quite a challenge. If you used a PHP demo service, you would have had to include [NuSOAP - SOAP Toolkit for PHP](https://sourceforge.net/projects/nusoap/) and [ThinkPHP2.1](http://www.thinkphp.cn/down/73.html). Including these other tools, learning how to use them, etc, proved to be too much admin, plus there was the issue of speed. Looked for alternative solutions and finally, thanks to my buddies Google and Stack Overflow, I stumbled upon a number of solutions that I incorporated to come up up with a solution I was pleased with. This involves embedding XML files directly into PHP code and manipulating SOAP responses and requests using a combination of [PHP cURL Library](http://php.net/manual/en/book.curl.php), [SimpleXMLElement](http://php.net/manual/en/class.simplexmlelement.php) and [XPath Path Expressions](http://www.w3schools.com/xml/xml_xpath.asp).
+```php
+<?php
+	/*
+	* Sample Book Store XML manipulation using XPath
+	*/
+	$SAMPLE_RESPONSE= <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bookstore>
+  <book>
+    <title lang="en">Harry Potter</title>
+    <author>J K. Rowling</author>
+    <year>2005</year>
+    <price>29.99</price>
+  </book>
+  <book>
+    <title lang="en">Bitterness (An African Novel from Zambia)</title>
+    <author>Malama Katulwende </author>
+    <year>2005</year>
+    <price>14.66</price>
+  </book>
+  <book>
+    <title lang="en">Glimmers of Hope : A Memoir of Zambia</title>
+    <author>Mark Burke</author>
+    <year>2010</year>
+    <price>15.98</price>
+  </book>
+  <book>
+    <title lang="en">Salaula: The World of Secondhand Clothing and Zambia</title>
+    <author>Karen Tranberg Hansen</author>
+    <year>2000</year>
+    <price>30.60</price>
+  </book>
+</bookstore>
+XML;
+	
+	$response_xml = new SimpleXMLElement(strstr($SAMPLE_RESPONSE, '<'));
+	
+	echo '<hr>';
+	
+	foreach ($response_xml->xpath('//bookstore/book') as $book) {
+		foreach ($book->children() as $book_details) {
+			if (!empty($book_details)) {
+				echo $book_details->getName() . ": " . strval($book_details) . "<br>";
+			}
+		}
+		echo '<hr>';
+	}
+?>
+```
 8. Creating API
   - Lastly, you might want to extend your app beyond the browser to other mobile platforms, SMS, USSD, etc using URL queries. To do that, you will also need to create your own API that provides interaction with your app. 
 
