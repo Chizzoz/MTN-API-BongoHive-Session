@@ -179,7 +179,7 @@ XML;
 ?>
 ```
 
-8. Creating API
+9. Creating API
   - Lastly, you might want to extend your app beyond the browser to other mobile platforms, SMS, USSD, etc using URL queries. To do that, you will also need to create your own API that provides interaction with your app. 
 
 So, that's about it. Thank you for your time!
