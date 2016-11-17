@@ -28,6 +28,7 @@ And below are some highlights:
   - To start testing a specific MTN API service, you need to download the relevant WSDL file from the resources page and import it into a new SOAPUI project, then you can use the SOAP messages specified in the [API reference documentaion](https://developer.mtn.com/community/portal/site.action?s=devsite&c=Resources&osIds=DEV2000001,DEV2000002,DEV2000003,DEV2000004,DEV2000005&categoryId=DEV1000002&apiResource=yes). With your SOAPUI project setup, you can create mock services that will emulate the MTN API server. I found API Reference documents to be extremely helpful in providing message flows and field specifications for messages sent. The API Reference documents include detailed sequence diagrams, sample SOAP messages and SOAP message parameter (field) specifications; like type (string, integer, etc), length, mandatory or not, etc.
 7. Alternative method to implement demo service using PHP
   - I called this a web approach to integrating MTN API, if you are like me, intending to develop something that runs in the browser and not using an IDE like Eclipse EE, working with XML, SOAP, WSDL, etc pose quite a challenge. If you used a PHP demo service, you would have had to include [NuSOAP - SOAP Toolkit for PHP](https://sourceforge.net/projects/nusoap/) and [ThinkPHP2.1](http://www.thinkphp.cn/down/73.html). Including these other tools, learning how to use them, etc, proved to be too much admin, plus there was the issue of speed. Looked for alternative solutions and finally, thanks to my buddies Google and Stack Overflow, I stumbled upon a number of solutions that I incorporated to come up up with a solution I was pleased with. This involves embedding XML files directly into PHP code and manipulating SOAP responses and requests using a combination of [PHP cURL Library](http://php.net/manual/en/book.curl.php), [SimpleXMLElement](http://php.net/manual/en/class.simplexmlelement.php) and [XPath Path Expressions](http://www.w3schools.com/xml/xml_xpath.asp).
+## Sample Book Store XML manipulation using XPath
 ```php
 <?php
 	/*
@@ -76,6 +77,103 @@ XML;
 		}
 		echo '<hr>';
 	}
+?>
+```
+## Sample code on how to send a SOAP request to specific server URL, receive the SOAP response from server and pull data from response using PHP cURL Library, SimpleXMLElement and XPath Path Expressions.
+```php
+<?php
+	/*
+	* Sample code on how to send a SOAP request to specific server URL,
+	* receive the SOAP response from server
+	* and pull data from response
+	* using PHP cURL Library, SimpleXMLElement and XPath Path Expressions.
+	* Download WSDL file and import in SOAPUI: https://developer.mtn.com/community/portal/site.action?s=devsite&c=detailsResource&lang=en&t=web&resourceId=433&resourceName=%3Cspan%20style=%22color:#1483BB;background:#FFFFFF;">Subscribe</span>_WSDL_6_1&categoryId=&h=resourceSearch&searchName=&search=&currentPage=
+	*/
+	
+	// This function will POST the SOAP message to the specified URL
+	function doXMLCurl($url,$postXML){
+		$headers = array(
+			"Content-type: text/xml;charset=\"utf-8\"",
+			"Accept: text/xml",
+			"Cache-Control: no-cache",
+			"Pragma: no-cache",
+			"SOAPAction: \"run\"",
+			"Content-length: ".strlen($postXML),
+		); 
+		$CURL = curl_init();
+
+		curl_setopt($CURL, CURLOPT_URL, $url); 
+		curl_setopt($CURL, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
+		curl_setopt($CURL, CURLOPT_POST, 1); 
+		curl_setopt($CURL, CURLOPT_POSTFIELDS, $postXML); 
+		curl_setopt($CURL, CURLOPT_HEADER, false); 
+		curl_setopt($CURL, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($CURL, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($CURL, CURLOPT_RETURNTRANSFER, true);
+		$xmlResponse = curl_exec($CURL); 
+
+		return $xmlResponse;
+	}
+	// This is the SOAP message to be sent to the API, you can replace the SOAP message below with any other SOAP message you wish to test
+	$REQUEST_BODY= <<<XML
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:loc="http://www.csapi.org/schema/parlayx/subscribe/manage/v1_0/local">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <loc:subscribeProductRequest>
+         <loc:subscribeProductReq>
+            <userID>
+               <ID>35000001</ID>
+               <type>0</type>
+            </userID>
+            <subInfo>
+               <productID>12345678</productID>
+               <!--Optional:-->
+               <operCode>1</operCode>
+               <!--Optional:-->
+               <isAutoExtend>1</isAutoExtend>
+               <channelID>1</channelID>
+               <!--Optional:-->
+               <extensionInfo>
+                  <!--Zero or more repetitions:-->
+                  <namedParameters>
+                     <key>?</key>
+                     <value>?</value>
+                  </namedParameters>
+               </extensionInfo>
+            </subInfo>
+         </loc:subscribeProductReq>
+      </loc:subscribeProductRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+XML;
+	// Catch any error in getting response from server and return error SOAP message
+	try {
+		$full_response = doXMLCurl('http://localhost:9080/SubscribeManageService/services/SubscribeManage', $REQUEST_BODY);
+	} catch (\Exception $e) {
+		$ERROR_RESPONSE= <<<XML
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Body>
+      <soapenv:Fault>
+         <faultcode>Server</faultcode>
+         <faultstring>Missing operation for soapAction [] and body element [null] with SOAP Version [SOAP 1.1]</faultstring>
+      </soapenv:Fault>
+   </soapenv:Body>
+</soapenv:Envelope>
+XML;
+
+		return $ERROR_RESPONSE;
+	}
+	// Get server response and manipulate using XPath
+	$response_xml = new SimpleXMLElement(strstr($full_response, '<'));
+	
+	echo '<hr>';
+	
+	foreach ($response_xml->xpath('//*[name()=\'loc:subscribeProductRsp\']/*') as $body) {
+		$ns = $body->getName();
+		
+		echo $ns . ": " . strval($body) . "<br>";
+	}
+	echo '<hr>';
 ?>
 ```
 8. Creating API
